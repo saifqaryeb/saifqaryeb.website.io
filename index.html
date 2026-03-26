@@ -78,15 +78,15 @@
         url("back.jpg") center center / cover no-repeat;
       z-index:-5;
       transform:scale(1.08);
-      animation:bgDrift 18s ease-in-out infinite alternate;
+      animation:bgDrift 22s ease-in-out infinite alternate;
       will-change:transform;
       transition:.35s ease;
     }
 
     @keyframes bgDrift{
       0%   { transform:scale(1.08) translate3d(0,0,0); }
-      50%  { transform:scale(1.10) translate3d(-6px,0,0); }
-      100% { transform:scale(1.09) translate3d(6px,0,0); }
+      50%  { transform:scale(1.09) translate3d(-4px,0,0); }
+      100% { transform:scale(1.085) translate3d(4px,0,0); }
     }
 
     .bg::before,
@@ -105,7 +105,7 @@
       background:#ff4f8a;
       top:8%;
       left:8%;
-      animation:blob1 12s ease-in-out infinite alternate;
+      animation:blob1 14s ease-in-out infinite alternate;
     }
 
     .bg::after{
@@ -114,20 +114,19 @@
       background:#3aa1ff;
       bottom:6%;
       right:8%;
-      animation:blob2 14s ease-in-out infinite alternate;
+      animation:blob2 16s ease-in-out infinite alternate;
     }
 
     @keyframes blob1{
       from{ transform:translate(0,0); }
-      to{ transform:translate(14px,-8px); }
+      to{ transform:translate(10px,-6px); }
     }
 
     @keyframes blob2{
       from{ transform:translate(0,0); }
-      to{ transform:translate(-14px,10px); }
+      to{ transform:translate(-10px,8px); }
     }
 
-    /* particles */
     .particles{
       position:fixed;
       inset:0;
@@ -160,7 +159,6 @@
       }
     }
 
-    /* language overlay */
     .lang-overlay{
       position:fixed;
       inset:0;
@@ -272,14 +270,14 @@
       -webkit-backdrop-filter:blur(18px);
       box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.10);
       transform-style:preserve-3d;
-      animation:cardFloat 7s ease-in-out infinite;
+      animation:cardFloat 12s ease-in-out infinite;
       transition:transform .18s ease, background .35s ease, border-color .35s ease;
     }
 
     @keyframes cardFloat{
-      0%   { transform:rotate(-1.2deg) translateX(-8px); }
-      50%  { transform:rotate(1.2deg) translateX(8px); }
-      100% { transform:rotate(-1.2deg) translateX(-8px); }
+      0%   { transform:rotate(-0.6deg) translateX(-4px); }
+      50%  { transform:rotate(0.6deg) translateX(4px); }
+      100% { transform:rotate(-0.6deg) translateX(-4px); }
     }
 
     .card::before{
@@ -300,7 +298,7 @@
       height:180%;
       background:linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
       transform:rotate(18deg);
-      animation:shineMove 8s linear infinite;
+      animation:shineMove 10s linear infinite;
       pointer-events:none;
     }
 
@@ -354,15 +352,15 @@
       box-shadow:0 12px 26px rgba(0,0,0,.34);
       margin-bottom:18px;
       position:relative;
-      animation:avatarGlow 4s ease-in-out infinite;
+      animation:avatarGlow 5s ease-in-out infinite;
     }
 
     @keyframes avatarGlow{
       0%,100%{
-        box-shadow:0 12px 26px rgba(0,0,0,.34), 0 0 0 0 rgba(255,255,255,.10);
+        box-shadow:0 12px 26px rgba(0,0,0,.34), 0 0 0 0 rgba(255,255,255,.08);
       }
       50%{
-        box-shadow:0 14px 30px rgba(255,255,255,.12), 0 0 0 12px rgba(255,255,255,.03);
+        box-shadow:0 14px 30px rgba(255,255,255,.10), 0 12px 26px rgba(0,0,0,.34), 0 0 0 10px rgba(255,255,255,.025);
       }
     }
 
@@ -396,28 +394,8 @@
       font-size:2.2rem;
       font-weight:800;
       line-height:1.1;
-      margin-bottom:10px;
+      margin-bottom:12px;
       text-shadow:0 6px 20px rgba(0,0,0,.18);
-    }
-
-    .typing-box{
-      min-height:34px;
-      margin-bottom:10px;
-      color:#fff;
-      font-size:1rem;
-      font-weight:700;
-      letter-spacing:.2px;
-    }
-
-    .cursor{
-      display:inline-block;
-      margin-right:2px;
-      animation:blink 1s infinite;
-    }
-
-    @keyframes blink{
-      0%, 50%{ opacity:1; }
-      51%, 100%{ opacity:0; }
     }
 
     .bio{
@@ -623,10 +601,6 @@
       .name-inline{
         font-size:1.9rem;
       }
-      .typing-box{
-        font-size:.92rem;
-        min-height:30px;
-      }
       .greeting{
         font-size:.88rem;
       }
@@ -720,10 +694,6 @@
 
         <div class="name-inline" id="nameText">سيف قريب</div>
 
-        <div class="typing-box">
-          <span id="typingText"></span><span class="cursor">|</span>
-        </div>
-
         <div class="bio" id="bioText">
           هندسة حاسوب 25<br>
           موقع تجريبي 2026/2027
@@ -774,7 +744,6 @@
   <script>
     const toast = document.getElementById("toast");
     const langOverlay = document.getElementById("langOverlay");
-    const typingText = document.getElementById("typingText");
     const greetingText = document.getElementById("greetingText");
     const body = document.body;
 
@@ -800,12 +769,7 @@
         morning: "صباح الخير",
         afternoon: "نهارك سعيد",
         evening: "مساء الخير",
-        night: "مساؤك جميل",
-        typingLines: [
-          "هندسة حاسوب 25",
-          "موقع شخصي تفاعلي",
-          "أهلًا بك في صفحتي"
-        ]
+        night: "مساؤك جميل"
       },
       en: {
         htmlLang: "en",
@@ -828,17 +792,11 @@
         morning: "Good Morning",
         afternoon: "Good Afternoon",
         evening: "Good Evening",
-        night: "Good Night",
-        typingLines: [
-          "Computer Engineering 25",
-          "Interactive Personal Website",
-          "Welcome To My Page"
-        ]
+        night: "Good Night"
       }
     };
 
     let currentLang = "ar";
-    let typingInterval;
 
     function showToast(msg){
       toast.textContent = msg;
@@ -854,37 +812,6 @@
       if(hour >= 12 && hour < 17) return t.afternoon;
       if(hour >= 17 && hour < 22) return t.evening;
       return t.night;
-    }
-
-    function startTyping(lines){
-      clearInterval(typingInterval);
-      let lineIndex = 0;
-      let charIndex = 0;
-      let deleting = false;
-
-      typingText.textContent = "";
-
-      typingInterval = setInterval(() => {
-        const currentLine = lines[lineIndex];
-
-        if(!deleting){
-          typingText.textContent = currentLine.slice(0, charIndex + 1);
-          charIndex++;
-
-          if(charIndex === currentLine.length){
-            deleting = true;
-            setTimeout(() => {}, 900);
-          }
-        } else {
-          typingText.textContent = currentLine.slice(0, charIndex - 1);
-          charIndex--;
-
-          if(charIndex === 0){
-            deleting = false;
-            lineIndex = (lineIndex + 1) % lines.length;
-          }
-        }
-      }, deleting ? 45 : 85);
     }
 
     function applyLanguage(lang){
@@ -907,8 +834,6 @@
       document.getElementById("copyUserText").textContent = t.copyUser;
       document.getElementById("footerText").innerHTML = t.footer;
       greetingText.textContent = getGreeting(lang);
-
-      startTyping(t.typingLines);
     }
 
     function chooseLanguage(lang){
@@ -995,8 +920,8 @@
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
 
-        const rotateX = ((y - centerY) / centerY) * -2.8;
-        const rotateY = ((x - centerX) / centerX) * 2.8;
+        const rotateX = ((y - centerY) / centerY) * -1.8;
+        const rotateY = ((x - centerX) / centerX) * 1.8;
 
         card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       });
@@ -1006,16 +931,15 @@
       });
     }
 
-    // particles
     const particlesContainer = document.getElementById("particles");
-    for(let i = 0; i < 18; i++){
+    for(let i = 0; i < 16; i++){
       const p = document.createElement("span");
       p.className = "particle";
       p.style.left = Math.random() * 100 + "vw";
-      p.style.animationDuration = (8 + Math.random() * 10) + "s";
+      p.style.animationDuration = (12 + Math.random() * 10) + "s";
       p.style.animationDelay = Math.random() * 8 + "s";
-      p.style.opacity = (0.15 + Math.random() * 0.35).toFixed(2);
-      p.style.width = p.style.height = (4 + Math.random() * 5) + "px";
+      p.style.opacity = (0.15 + Math.random() * 0.25).toFixed(2);
+      p.style.width = p.style.height = (4 + Math.random() * 4) + "px";
       particlesContainer.appendChild(p);
     }
   </script>
