@@ -12,21 +12,21 @@
 
   <style>
     :root{
-      --text:#fff;
-      --muted:rgba(255,255,255,.78);
-      --glass-1:rgba(255,255,255,.12);
-      --glass-2:rgba(255,255,255,.07);
-      --stroke:rgba(255,255,255,.16);
-      --shadow:0 24px 60px rgba(0,0,0,.35);
+      --text:#ffffff;
+      --muted:rgba(255,255,255,.82);
+      --glass1:rgba(255,255,255,.15);
+      --glass2:rgba(255,255,255,.07);
+      --stroke:rgba(255,255,255,.18);
       --soft:rgba(255,255,255,.08);
+      --shadow:0 28px 60px rgba(0,0,0,.38);
 
       --ig1:#e1306c;
       --ig2:#ff4f8a;
       --tt1:#0d0e11;
-      --tt2:#191b1f;
+      --tt2:#1b1c20;
       --snap1:#fff200;
       --snap2:#ffea00;
-      --wa1:#18b857;
+      --wa1:#16b857;
       --wa2:#25d366;
     }
 
@@ -43,9 +43,9 @@
       align-items:center;
       justify-content:center;
       padding:18px;
-      color:var(--text);
       overflow-x:hidden;
-      background:#0d1219;
+      color:var(--text);
+      background:#0d1118;
       position:relative;
     }
 
@@ -54,24 +54,18 @@
       position:fixed;
       inset:0;
       background:
-        linear-gradient(rgba(7,11,16,.28), rgba(7,11,16,.62)),
+        linear-gradient(rgba(8,12,18,.28), rgba(8,12,18,.62)),
         url("back.jpg") center center / cover no-repeat;
       z-index:-5;
-      transform:scale(1.06);
-      animation:bgFloat 18s ease-in-out infinite alternate;
+      transform:scale(1.08);
+      animation:bgDrift 18s ease-in-out infinite alternate;
       will-change:transform;
     }
 
-    @keyframes bgFloat{
-      0%{
-        transform:scale(1.06) translate3d(0,0,0);
-      }
-      50%{
-        transform:scale(1.10) translate3d(-10px,-8px,0);
-      }
-      100%{
-        transform:scale(1.08) translate3d(8px,6px,0);
-      }
+    @keyframes bgDrift{
+      0%   { transform:scale(1.08) translate3d(0,0,0); }
+      50%  { transform:scale(1.11) translate3d(-10px,0,0); }
+      100% { transform:scale(1.09) translate3d(10px,0,0); }
     }
 
     .bg::before,
@@ -85,42 +79,43 @@
     }
 
     .bg::before{
-      width:280px;
-      height:280px;
+      width:300px;
+      height:300px;
       background:#ff4f8a;
       top:8%;
-      left:6%;
-      animation:glowMove1 12s ease-in-out infinite alternate;
+      left:8%;
+      animation:blob1 12s ease-in-out infinite alternate;
     }
 
     .bg::after{
       width:340px;
       height:340px;
-      background:#37a2ff;
-      right:8%;
+      background:#3aa1ff;
       bottom:6%;
-      animation:glowMove2 14s ease-in-out infinite alternate;
+      right:8%;
+      animation:blob2 14s ease-in-out infinite alternate;
     }
 
-    @keyframes glowMove1{
+    @keyframes blob1{
       from{ transform:translate(0,0); }
-      to{ transform:translate(16px,-10px); }
+      to{ transform:translate(18px,-10px); }
     }
 
-    @keyframes glowMove2{
+    @keyframes blob2{
       from{ transform:translate(0,0); }
-      to{ transform:translate(-18px,12px); }
+      to{ transform:translate(-20px,12px); }
     }
 
     .wrap{
-      width:min(100%, 980px);
+      width:min(100%, 560px);
+      perspective:1200px;
       animation:fadeUp .85s ease;
     }
 
     @keyframes fadeUp{
       from{
         opacity:0;
-        transform:translateY(22px) scale(.985);
+        transform:translateY(20px) scale(.985);
       }
       to{
         opacity:1;
@@ -132,12 +127,20 @@
       position:relative;
       overflow:hidden;
       border-radius:34px;
-      background:linear-gradient(180deg, var(--glass-1), var(--glass-2));
+      padding:28px 22px 22px;
+      background:linear-gradient(180deg, var(--glass1), var(--glass2));
       border:1px solid var(--stroke);
       backdrop-filter:blur(18px);
       -webkit-backdrop-filter:blur(18px);
       box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.10);
-      padding:26px;
+      transform-style:preserve-3d;
+      animation:cardFloat 7s ease-in-out infinite;
+    }
+
+    @keyframes cardFloat{
+      0%   { transform:rotate(-1.2deg) translateX(-8px); }
+      50%  { transform:rotate(1.2deg) translateX(8px); }
+      100% { transform:rotate(-1.2deg) translateX(-8px); }
     }
 
     .card::before{
@@ -145,85 +148,88 @@
       position:absolute;
       inset:0;
       background:
-        linear-gradient(135deg, rgba(255,255,255,.08), transparent 35%, transparent 70%, rgba(255,255,255,.04));
+        linear-gradient(135deg, rgba(255,255,255,.10), transparent 36%, transparent 72%, rgba(255,255,255,.05));
       pointer-events:none;
     }
 
-    .layout{
-      display:grid;
-      grid-template-columns: 1.4fr .9fr;
-      gap:22px;
-      align-items:center;
+    .card::after{
+      content:"";
+      position:absolute;
+      top:-30%;
+      left:-45%;
+      width:40%;
+      height:180%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+      transform:rotate(18deg);
+      animation:shineMove 7s linear infinite;
+      pointer-events:none;
     }
 
-    .left-side{
-      display:flex;
-      flex-direction:column;
-      gap:14px;
+    @keyframes shineMove{
+      0%{ left:-55%; }
+      100%{ left:130%; }
     }
 
-    .stats-grid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-    }
-
-    .info-box{
-      background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:22px;
-      min-height:158px;
+    .profile{
       display:flex;
       flex-direction:column;
       align-items:center;
-      justify-content:center;
       text-align:center;
-      padding:18px 14px;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+      margin-bottom:22px;
     }
 
-    .info-box i{
-      font-size:1.2rem;
-      margin-bottom:10px;
-      opacity:.95;
+    .avatar-wrap{
+      width:126px;
+      height:126px;
+      border-radius:50%;
+      padding:4px;
+      background:linear-gradient(135deg, #f5e4c3, #8a8077, #fff);
+      box-shadow:0 12px 26px rgba(0,0,0,.34);
+      margin-bottom:18px;
+      position:relative;
     }
 
-    .info-title{
-      font-size:.9rem;
-      color:var(--muted);
-      font-weight:600;
+    .avatar-wrap::after{
+      content:"";
+      position:absolute;
+      inset:-6px;
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:50%;
+    }
+
+    .avatar{
+      width:100%;
+      height:100%;
+      border-radius:50%;
+      object-fit:cover;
+      display:block;
+      border:3px solid rgba(255,255,255,.76);
+      background:#222;
+    }
+
+    h1{
+      font-size:2.3rem;
+      line-height:1.1;
+      font-weight:800;
       margin-bottom:6px;
+      text-shadow:0 6px 20px rgba(0,0,0,.18);
     }
 
-    .info-value{
-      font-size:1.15rem;
-      font-weight:800;
-      color:#fff;
-      margin-bottom:10px;
+    .username{
+      color:var(--muted);
+      font-size:1rem;
+      margin-bottom:12px;
     }
 
-    .small-btn{
-      border:none;
-      outline:none;
-      cursor:pointer;
-      padding:10px 14px;
-      border-radius:14px;
-      background:rgba(255,255,255,.12);
-      color:#fff;
-      font-size:.88rem;
-      font-weight:800;
-      transition:.2s ease;
-      min-width:120px;
+    .bio{
+      color:rgba(255,255,255,.95);
+      font-size:1rem;
+      line-height:1.95;
     }
 
-    .small-btn:hover{
-      background:rgba(255,255,255,.18);
-      transform:translateY(-1px);
-    }
-
-    .buttons-grid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
+    .main-links{
+      display:flex;
+      flex-direction:column;
       gap:14px;
     }
 
@@ -240,12 +246,13 @@
       cursor:pointer;
       border-radius:20px;
       padding:15px 18px;
-      font-size:1rem;
+      font-size:1.02rem;
       font-weight:800;
       transition:transform .18s ease, box-shadow .24s ease, filter .24s ease;
       overflow:hidden;
       user-select:none;
       color:#fff;
+      box-shadow:0 10px 24px rgba(0,0,0,.18);
     }
 
     .btn i{
@@ -262,8 +269,7 @@
     }
 
     .btn::before,
-    .mini-btn::before,
-    .small-btn::before{
+    .mini-btn::before{
       content:"";
       position:absolute;
       top:0;
@@ -277,14 +283,12 @@
     }
 
     .btn:hover::before,
-    .mini-btn:hover::before,
-    .small-btn:hover::before{
+    .mini-btn:hover::before{
       left:130%;
     }
 
     .btn.clicked,
-    .mini-btn.clicked,
-    .small-btn.clicked{
+    .mini-btn.clicked{
       animation:press .45s ease;
     }
 
@@ -311,31 +315,28 @@
       }
     }
 
-    .tiktok{
-      background:linear-gradient(90deg, var(--tt1), var(--tt2));
-      box-shadow:0 10px 24px rgba(0,0,0,.28);
-    }
-
     .instagram{
       background:linear-gradient(90deg, var(--ig1), var(--ig2));
-      box-shadow:0 10px 24px rgba(225,48,108,.25);
     }
 
-    .whatsapp{
-      background:linear-gradient(90deg, var(--wa1), var(--wa2));
-      box-shadow:0 10px 24px rgba(37,211,102,.24);
+    .tiktok{
+      background:linear-gradient(90deg, var(--tt1), var(--tt2));
     }
 
     .snapchat{
       color:#111;
       background:linear-gradient(90deg, var(--snap1), var(--snap2));
-      box-shadow:0 10px 24px rgba(255,239,0,.18);
     }
 
-    .mini-grid{
+    .whatsapp{
+      background:linear-gradient(90deg, var(--wa1), var(--wa2));
+    }
+
+    .mini-row{
       display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap:14px;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-top:14px;
     }
 
     .mini-btn{
@@ -349,7 +350,7 @@
       background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.12);
       color:#fff;
-      font-size:.97rem;
+      font-size:.96rem;
       font-weight:800;
       cursor:pointer;
       transition:transform .18s ease, background .22s ease;
@@ -361,54 +362,6 @@
       background:rgba(255,255,255,.11);
     }
 
-    .right-side{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:8px 8px 8px 0;
-    }
-
-    .avatar-wrap{
-      width:128px;
-      height:128px;
-      border-radius:50%;
-      padding:4px;
-      background:linear-gradient(135deg, #f4e3c2, #8a8077, #fff);
-      box-shadow:0 12px 26px rgba(0,0,0,.34);
-      margin-bottom:18px;
-    }
-
-    .avatar{
-      width:100%;
-      height:100%;
-      border-radius:50%;
-      object-fit:cover;
-      display:block;
-      border:3px solid rgba(255,255,255,.76);
-      background:#222;
-    }
-
-    h1{
-      font-size:2.25rem;
-      line-height:1.1;
-      font-weight:800;
-      margin-bottom:6px;
-    }
-
-    .username{
-      color:var(--muted);
-      font-size:1rem;
-      margin-bottom:12px;
-    }
-
-    .bio{
-      color:rgba(255,255,255,.93);
-      font-size:1rem;
-      line-height:1.95;
-    }
-
     .line{
       height:1px;
       background:rgba(255,255,255,.13);
@@ -417,7 +370,7 @@
 
     .footer{
       text-align:center;
-      color:rgba(255,255,255,.80);
+      color:rgba(255,255,255,.82);
       font-size:.95rem;
     }
 
@@ -443,6 +396,7 @@
       font-size:.94rem;
       font-weight:700;
       z-index:50;
+      white-space:nowrap;
     }
 
     .toast.show{
@@ -450,56 +404,62 @@
       transform:translateX(-50%) translateY(0);
     }
 
-    @media (max-width: 900px){
-      .layout{
-        grid-template-columns:1fr;
-      }
-
-      .right-side{
-        padding:0;
-      }
-    }
-
-    @media (max-width: 680px){
+    /* للموبايل */
+    @media (max-width: 640px){
       body{
         padding:14px;
       }
 
+      .wrap{
+        width:100%;
+      }
+
       .card{
-        border-radius:24px;
-        padding:18px 14px;
-      }
-
-      .stats-grid{
-        grid-template-columns:1fr;
-      }
-
-      .buttons-grid,
-      .mini-grid{
-        grid-template-columns:1fr;
+        border-radius:26px;
+        padding:24px 16px 18px;
+        animation:none;
       }
 
       .avatar-wrap{
-        width:106px;
-        height:106px;
+        width:108px;
+        height:108px;
       }
 
       h1{
-        font-size:1.8rem;
+        font-size:1.9rem;
       }
 
       .bio{
         font-size:.95rem;
-      }
-
-      .info-box{
-        min-height:120px;
-        border-radius:18px;
+        line-height:1.85;
       }
 
       .btn{
+        min-height:58px;
         border-radius:18px;
-        min-height:56px;
+        font-size:.98rem;
+      }
+
+      .mini-row{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media (max-width: 430px){
+      .mini-row{
+        grid-template-columns:1fr;
+      }
+
+      h1{
+        font-size:1.75rem;
+      }
+
+      .username{
+        font-size:.95rem;
+      }
+
+      .bio{
+        font-size:.92rem;
       }
     }
   </style>
@@ -509,80 +469,54 @@
   <div class="bg"></div>
 
   <main class="wrap">
-    <section class="card">
-      <div class="layout">
+    <section class="card" id="card">
 
-        <div class="left-side">
-          <div class="stats-grid">
-            <div class="info-box">
-              <i class="fa-solid fa-link"></i>
-              <div class="info-title">Website</div>
-              <div class="info-value">Copy Link</div>
-              <button class="small-btn" id="copySiteBtn">Copy URL</button>
-            </div>
-
-            <div class="info-box">
-              <i class="fa-solid fa-signal"></i>
-              <div class="info-title">Status</div>
-              <div class="info-value">Online</div>
-            </div>
-
-            <div class="info-box">
-              <i class="fa-regular fa-eye"></i>
-              <div class="info-title">Visitors</div>
-              <div class="info-value" id="visitor-count">Loading...</div>
-            </div>
-          </div>
-
-          <div class="buttons-grid">
-            <a class="btn tiktok" href="https://www.tiktok.com/@saifqaryeb" target="_blank" rel="noopener">
-              <span>TikTok</span>
-              <i class="fa-brands fa-tiktok"></i>
-            </a>
-
-            <a class="btn instagram" href="https://instagram.com/saifqaryeb" target="_blank" rel="noopener">
-              <span>Instagram</span>
-              <i class="fa-brands fa-instagram"></i>
-            </a>
-
-            <a class="btn whatsapp" href="https://wa.me/972598893689?text=مرحبا%20سيف" target="_blank" rel="noopener">
-              <span>WhatsApp</span>
-              <i class="fa-brands fa-whatsapp"></i>
-            </a>
-
-            <a class="btn snapchat" href="https://www.snapchat.com/add/saif-qaryeb" target="_blank" rel="noopener">
-              <span>Snapchat</span>
-              <i class="fa-brands fa-snapchat"></i>
-            </a>
-          </div>
-
-          <div class="mini-grid">
-            <button class="mini-btn" id="shareBtn">
-              <span>Share Site</span>
-              <i class="fa-solid fa-share-nodes"></i>
-            </button>
-
-            <button class="mini-btn" id="copyUserBtn">
-              <span>Copy Username</span>
-              <i class="fa-regular fa-copy"></i>
-            </button>
-          </div>
+      <div class="profile">
+        <div class="avatar-wrap">
+          <img src="profile.jpg" alt="Saif Qaryeb" class="avatar">
         </div>
 
-        <div class="right-side">
-          <div class="avatar-wrap">
-            <img src="profile.jpg" alt="Saif Qaryeb" class="avatar">
-          </div>
+        <h1>سيف قريب</h1>
+        <div class="username">@saifqaryeb</div>
 
-          <h1>سيف قريب</h1>
-          <div class="username">@saifqaryeb</div>
-
-          <div class="bio">
-            Computer Engineering 25<br>
-            Testing Website 2026/2027
-          </div>
+        <div class="bio">
+          Computer Engineering 25<br>
+          Testing Website 2026/2027
         </div>
+      </div>
 
+      <div class="main-links">
+        <a class="btn instagram" href="https://instagram.com/saifqaryeb" target="_blank" rel="noopener">
+          <span>Instagram</span>
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+
+        <a class="btn tiktok" href="https://www.tiktok.com/@saifqaryeb" target="_blank" rel="noopener">
+          <span>TikTok</span>
+          <i class="fa-brands fa-tiktok"></i>
+        </a>
+
+        <a class="btn snapchat" href="https://www.snapchat.com/add/saif-qaryeb" target="_blank" rel="noopener">
+          <span>Snapchat</span>
+          <i class="fa-brands fa-snapchat"></i>
+        </a>
+
+        <a class="btn whatsapp" href="https://wa.me/972598893689?text=مرحبا%20سيف" target="_blank" rel="noopener">
+          <span>WhatsApp</span>
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+      </div>
+
+      <div class="mini-row">
+        <button class="mini-btn" id="shareBtn">
+          <span>Share Site</span>
+          <i class="fa-solid fa-share-nodes"></i>
+        </button>
+
+        <button class="mini-btn" id="copyUserBtn">
+          <span>Copy Username</span>
+          <i class="fa-regular fa-copy"></i>
+        </button>
       </div>
 
       <div class="line"></div>
@@ -601,8 +535,7 @@
       setTimeout(() => toast.classList.remove("show"), 1800);
     }
 
-    // Ripple + press effect
-    document.querySelectorAll(".btn, .mini-btn, .small-btn").forEach((btn) => {
+    document.querySelectorAll(".btn, .mini-btn").forEach((btn) => {
       btn.addEventListener("click", function(e) {
         this.classList.remove("clicked");
         void this.offsetWidth;
@@ -627,7 +560,6 @@
       });
     });
 
-    // Copy username
     document.getElementById("copyUserBtn").addEventListener("click", async () => {
       try{
         await navigator.clipboard.writeText("@saifqaryeb");
@@ -637,17 +569,6 @@
       }
     });
 
-    // Copy URL
-    document.getElementById("copySiteBtn").addEventListener("click", async () => {
-      try{
-        await navigator.clipboard.writeText(window.location.href);
-        showToast("Website link copied");
-      }catch{
-        showToast("Copy failed");
-      }
-    });
-
-    // Share site
     document.getElementById("shareBtn").addEventListener("click", async () => {
       if (navigator.share) {
         try{
@@ -667,24 +588,26 @@
       }
     });
 
-    // Global counter with fallback local counter
-    const visitorEl = document.getElementById("visitor-count");
+    // Tilt on desktop فقط
+    const card = document.getElementById("card");
+    if (window.innerWidth > 768) {
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
 
-    fetch("https://api.countapi.xyz/hit/saifqaryeb/sitevisits2026")
-      .then(res => res.json())
-      .then(data => {
-        if (data && typeof data.value !== "undefined") {
-          visitorEl.textContent = data.value;
-        } else {
-          throw new Error("Counter failed");
-        }
-      })
-      .catch(() => {
-        let localCount = localStorage.getItem("saif_local_visits_fallback");
-        localCount = localCount ? parseInt(localCount) + 1 : 1;
-        localStorage.setItem("saif_local_visits_fallback", localCount);
-        visitorEl.textContent = localCount;
+        const rotateX = ((y - centerY) / centerY) * -2.8;
+        const rotateY = ((x - centerX) / centerX) * 2.8;
+
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       });
+
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "";
+      });
+    }
   </script>
 
 </body>
