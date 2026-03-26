@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>سيف قريب | Links</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:"Cairo",sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      color:#fff;
+      background:#0f1115;
+      position:relative;
+    }
+
+    /* الخلفية */
+    .bg{
+      position:fixed;
+      inset:0;
+      background:
+        linear-gradient(rgba(0,0,0,.28), rgba(0,0,0,.48)),
+        url("back.jpg") center center / cover no-repeat;
+      transform:scale(1.03);
+      z-index:-3;
+      animation:bgZoom 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes bgZoom{
+      from{ transform:scale(1.03); }
+      to{ transform:scale(1.08); }
+    }
+
+    /* دوائر إضاءة */
+    .light{
+      position:fixed;
+      border-radius:50%;
+      filter:blur(70px);
+      opacity:.22;
+      z-index:-2;
+      pointer-events:none;
+    }
+
+    .light.one{
+      width:240px;
+      height:240px;
+      background:#ff2f6d;
+      top:8%;
+      left:8%;
+    }
+
+    .light.two{
+      width:280px;
+      height:280px;
+      background:#3aa4ff;
+      bottom:8%;
+      right:10%;
+    }
+
+    .wrapper{
+      width:min(92vw, 440px);
+      animation:fadeUp .9s ease both;
+    }
+
+    @keyframes fadeUp{
+      from{
+        opacity:0;
+        transform:translateY(24px) scale(.98);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+      }
+    }
+
+    .card{
+      border-radius:30px;
+      padding:34px 30px 24px;
+      text-align:center;
+      background:linear-gradient(180deg, rgba(255,255,255,.17), rgba(255,255,255,.07));
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      border:1px solid rgba(255,255,255,.20);
+      box-shadow:
+        0 24px 60px rgba(0,0,0,.34),
+        inset 0 1px 0 rgba(255,255,255,.12);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background:linear-gradient(135deg, rgba(255,255,255,.12), transparent 30%, transparent 70%, rgba(255,255,255,.08));
+      pointer-events:none;
+      border-radius:30px;
+    }
+
+    .avatar-frame{
+      width:124px;
+      height:124px;
+      margin:0 auto 18px;
+      border-radius:50%;
+      padding:5px;
+      background:linear-gradient(135deg, #efe3c8, #7f756e, #f7f7f7);
+      box-shadow:0 12px 26px rgba(0,0,0,.36);
+      position:relative;
+    }
+
+    .avatar-frame::after{
+      content:"";
+      position:absolute;
+      inset:-6px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.18);
+    }
+
+    .avatar{
+      width:100%;
+      height:100%;
+      border-radius:50%;
+      object-fit:cover;
+      display:block;
+      border:3px solid rgba(255,255,255,.75);
+      background:#222;
+    }
+
+    h1{
+      font-size:2rem;
+      font-weight:800;
+      line-height:1.1;
+      margin-bottom:4px;
+      text-shadow:0 2px 10px rgba(0,0,0,.18);
+    }
+
+    .username{
+      font-size:1.03rem;
+      color:rgba(255,255,255,.85);
+      margin-bottom:14px;
+    }
+
+    .bio{
+      font-size:1.04rem;
+      line-height:1.9;
+      color:rgba(255,255,255,.95);
+      margin-bottom:24px;
+    }
+
+    .links{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .btn{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      width:100%;
+      text-decoration:none;
+      border:none;
+      cursor:pointer;
+      padding:15px 18px;
+      border-radius:18px;
+      font-size:1.08rem;
+      font-weight:800;
+      transition:transform .18s ease, box-shadow .25s ease, filter .25s ease;
+      overflow:hidden;
+      user-select:none;
+      outline:none;
+    }
+
+    .btn i{
+      font-size:1.28rem;
+    }
+
+    .btn:hover{
+      transform:translateY(-2px) scale(1.01);
+      filter:brightness(1.04);
+    }
+
+    .btn:active{
+      transform:scale(.985);
+    }
+
+    /* لمعة على الزر */
+    .btn::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:-120%;
+      width:52%;
+      height:100%;
+      transform:skewX(-24deg);
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
+      transition:left .65s ease;
+    }
+
+    .btn:hover::before{
+      left:130%;
+    }
+
+    /* تأثير الضغط */
+    .btn.clicked{
+      animation:pressPop .45s ease;
+    }
+
+    @keyframes pressPop{
+      0%{ transform:scale(1); }
+      30%{ transform:scale(.96); }
+      65%{ transform:scale(1.03); }
+      100%{ transform:scale(1); }
+    }
+
+    .ripple{
+      position:absolute;
+      border-radius:50%;
+      transform:scale(0);
+      animation:rippleAnim .72s ease-out forwards;
+      background:rgba(255,255,255,.34);
+      pointer-events:none;
+    }
+
+    @keyframes rippleAnim{
+      to{
+        transform:scale(16);
+        opacity:0;
+      }
+    }
+
+    .instagram{
+      background:linear-gradient(90deg, #d63384, #df3e73, #c92f76);
+      color:#fff;
+      box-shadow:0 10px 24px rgba(214,51,132,.28);
+    }
+
+    .tiktok{
+      background:#101114;
+      color:#fff;
+      box-shadow:0 10px 24px rgba(0,0,0,.28);
+    }
+
+    .snapchat{
+      background:#ffef00;
+      color:#111;
+      box-shadow:0 10px 24px rgba(255,239,0,.22);
+    }
+
+    .whatsapp{
+      background:linear-gradient(90deg, #1db954, #20c05c, #25d366);
+      color:#fff;
+      box-shadow:0 10px 24px rgba(37,211,102,.28);
+    }
+
+    .divider{
+      height:1px;
+      background:rgba(255,255,255,.16);
+      margin:22px 0 14px;
+    }
+
+    .footer{
+      font-size:.93rem;
+      color:rgba(255,255,255,.80);
+      letter-spacing:.2px;
+    }
+
+    .footer span{
+      color:#ff5577;
+      font-weight:800;
+    }
+
+    @media (max-width:520px){
+      .card{
+        padding:28px 20px 22px;
+        border-radius:24px;
+      }
+
+      .avatar-frame{
+        width:108px;
+        height:108px;
+      }
+
+      h1{
+        font-size:1.72rem;
+      }
+
+      .bio{
+        font-size:.98rem;
+      }
+
+      .btn{
+        font-size:1rem;
+        padding:14px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg"></div>
+  <div class="light one"></div>
+  <div class="light two"></div>
+
+  <div class="wrapper">
+    <div class="card">
+      <div class="avatar-frame">
+        <img src="profile.jpg" alt="Saif Qaryeb" class="avatar">
+      </div>
+
+      <h1>سيف قريب</h1>
+      <div class="username">@saifqaryeb</div>
+
+      <div class="bio">
+        Computer Engineering 25<br>
+        Testing Website 2026/2027
+      </div>
+
+      <div class="links">
+        <a class="btn instagram" href="https://instagram.com/saifqaryeb" target="_blank" rel="noopener">
+          <i class="fa-brands fa-instagram"></i>
+          <span>Instagram</span>
+        </a>
+
+        <a class="btn tiktok" href="https://www.tiktok.com/@saifqaryeb" target="_blank" rel="noopener">
+          <i class="fa-brands fa-tiktok"></i>
+          <span>TikTok</span>
+        </a>
+
+        <a class="btn snapchat" href="https://www.snapchat.com/add/saif-qaryeb" target="_blank" rel="noopener">
+          <i class="fa-brands fa-snapchat"></i>
+          <span>Snapchat</span>
+        </a>
+
+        <a class="btn whatsapp" href="https://wa.me/972598893689" target="_blank" rel="noopener">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span>WhatsApp</span>
+        </a>
+      </div>
+
+      <div class="divider"></div>
+      <div class="footer">Made with <span>♥</span> by Saif</div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll(".btn").forEach((btn) => {
+      btn.addEventListener("click", function(e) {
+        this.classList.remove("clicked");
+        void this.offsetWidth;
+        this.classList.add("clicked");
+
+        const ripple = document.createElement("span");
+        ripple.className = "ripple";
+
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+
+        ripple.style.width = size + "px";
+        ripple.style.height = size + "px";
+        ripple.style.left = (e.clientX - rect.left - size / 2) + "px";
+        ripple.style.top = (e.clientY - rect.top - size / 2) + "px";
+
+        this.appendChild(ripple);
+
+        setTimeout(() => {
+          ripple.remove();
+          this.classList.remove("clicked");
+        }, 720);
+      });
+    });
+  </script>
+
+</body>
+</html>
