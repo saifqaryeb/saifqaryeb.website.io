@@ -8,334 +8,467 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Cairo", sans-serif;
+    :root{
+      --bg:#0b0f16;
+      --glass:rgba(255,255,255,.12);
+      --glass-2:rgba(255,255,255,.07);
+      --stroke:rgba(255,255,255,.18);
+      --text:#ffffff;
+      --muted:rgba(255,255,255,.78);
+      --shadow:0 20px 60px rgba(0,0,0,.38);
+      --ig1:#d63384;
+      --ig2:#ff4d7c;
+      --tt:#0f1013;
+      --snap:#ffef00;
+      --wa1:#18b857;
+      --wa2:#25d366;
     }
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #0e1116;
-      overflow-x: hidden;
-      position: relative;
-      color: white;
-      padding: 20px;
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html{ scroll-behavior:smooth; }
+    body{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:18px;
+      overflow-x:hidden;
+      font-family:"Cairo",sans-serif;
+      color:var(--text);
+      background:var(--bg);
     }
 
-    .background {
-      position: fixed;
-      inset: 0;
+    .bg{
+      position:fixed;
+      inset:0;
       background:
-        linear-gradient(rgba(7, 10, 15, 0.35), rgba(7, 10, 15, 0.60)),
+        linear-gradient(rgba(8,12,18,.28), rgba(8,12,18,.58)),
         url("back.jpg") center center / cover no-repeat;
-      z-index: -3;
-      transform: scale(1.03);
+      z-index:-3;
+      transform:scale(1.04);
+      animation:bgMove 18s ease-in-out infinite alternate;
     }
 
-    .background::after {
-      content: "";
-      position: absolute;
-      inset: 0;
+    .bg::before,
+    .bg::after{
+      content:"";
+      position:absolute;
+      border-radius:50%;
+      filter:blur(80px);
+      opacity:.18;
+      pointer-events:none;
+    }
+
+    .bg::before{
+      width:280px;
+      height:280px;
+      background:#ff4f87;
+      top:8%;
+      left:6%;
+    }
+
+    .bg::after{
+      width:320px;
+      height:320px;
+      background:#3a9fff;
+      bottom:6%;
+      right:8%;
+    }
+
+    @keyframes bgMove{
+      from{ transform:scale(1.04) translateY(0); }
+      to{ transform:scale(1.09) translateY(-6px); }
+    }
+
+    .container{
+      width:min(100%, 440px);
+      animation:enter .9s cubic-bezier(.18,.89,.32,1.16);
+      perspective:1000px;
+    }
+
+    @keyframes enter{
+      from{ opacity:0; transform:translateY(26px) scale(.97); }
+      to{ opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    .card{
+      position:relative;
+      overflow:hidden;
+      border-radius:30px;
+      padding:32px 22px 22px;
+      background:linear-gradient(180deg, var(--glass), var(--glass-2));
+      border:1px solid var(--stroke);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.12);
+      transform-style:preserve-3d;
+      transition:transform .18s ease;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
       background:
-        radial-gradient(circle at 15% 20%, rgba(255, 90, 150, 0.16), transparent 24%),
-        radial-gradient(circle at 85% 25%, rgba(0, 183, 255, 0.14), transparent 22%),
-        radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.06), transparent 30%);
-      pointer-events: none;
+        linear-gradient(135deg, rgba(255,255,255,.11), transparent 34%, transparent 70%, rgba(255,255,255,.05));
+      pointer-events:none;
     }
 
-    .card {
-      width: 100%;
-      max-width: 430px;
-      border-radius: 30px;
-      padding: 32px 24px 24px;
-      text-align: center;
-      background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,0.18);
-      box-shadow:
-        0 15px 40px rgba(0,0,0,0.35),
-        inset 0 1px 0 rgba(255,255,255,0.12);
-      animation: fadeUp 0.8s ease;
-      position: relative;
-      overflow: hidden;
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius:30px;
+      background:linear-gradient(135deg, rgba(255,255,255,.08), transparent 30%, transparent 75%, rgba(255,255,255,.07));
+      mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask-composite:exclude;
+      -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+      padding:1px;
+      pointer-events:none;
+      opacity:.45;
     }
 
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 40%, transparent 70%, rgba(255,255,255,0.04));
-      pointer-events: none;
+    .shine{
+      position:absolute;
+      inset:-150% auto auto -40%;
+      width:55%;
+      height:280%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+      transform:rotate(18deg);
+      animation:shine 7s linear infinite;
+      pointer-events:none;
     }
 
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.98);
+    @keyframes shine{
+      0%{ left:-60%; }
+      100%{ left:130%; }
+    }
+
+    .avatar-wrap{
+      width:118px;
+      height:118px;
+      margin:0 auto 16px;
+      padding:4px;
+      border-radius:50%;
+      background:linear-gradient(135deg, #f6e7c5, #8e837a, #ffffff);
+      box-shadow:0 12px 26px rgba(0,0,0,.34);
+      position:relative;
+    }
+
+    .avatar-wrap::after{
+      content:"";
+      position:absolute;
+      inset:-6px;
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:50%;
+    }
+
+    .avatar{
+      width:100%;
+      height:100%;
+      border-radius:50%;
+      object-fit:cover;
+      display:block;
+      border:3px solid rgba(255,255,255,.76);
+      background:#222;
+    }
+
+    h1{
+      text-align:center;
+      font-size:2rem;
+      line-height:1.1;
+      font-weight:800;
+      margin-bottom:5px;
+      letter-spacing:.2px;
+      text-shadow:0 6px 20px rgba(0,0,0,.18);
+    }
+
+    .username{
+      text-align:center;
+      color:var(--muted);
+      font-size:1rem;
+      margin-bottom:14px;
+    }
+
+    .bio{
+      text-align:center;
+      color:rgba(255,255,255,.94);
+      font-size:1rem;
+      line-height:1.9;
+      margin-bottom:22px;
+    }
+
+    .actions{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:13px;
+    }
+
+    .btn{
+      position:relative;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      padding:15px 16px;
+      border-radius:18px;
+      text-decoration:none;
+      border:none;
+      outline:none;
+      cursor:pointer;
+      font-size:1.04rem;
+      font-weight:800;
+      overflow:hidden;
+      user-select:none;
+      transition:transform .18s ease, box-shadow .25s ease, filter .25s ease;
+      will-change:transform;
+    }
+
+    .btn i{ font-size:1.22rem; }
+
+    .btn:hover{
+      transform:translateY(-2px) scale(1.012);
+      filter:brightness(1.03);
+    }
+
+    .btn:active{
+      transform:scale(.985);
+    }
+
+    .btn::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:-120%;
+      width:52%;
+      height:100%;
+      transform:skewX(-24deg);
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.30), transparent);
+      transition:left .7s ease;
+    }
+
+    .btn:hover::before{ left:130%; }
+
+    .btn.clicked{
+      animation:press .45s ease;
+    }
+
+    @keyframes press{
+      0%{ transform:scale(1); }
+      35%{ transform:scale(.965); }
+      70%{ transform:scale(1.03); }
+      100%{ transform:scale(1); }
+    }
+
+    .ripple{
+      position:absolute;
+      border-radius:50%;
+      transform:scale(0);
+      background:rgba(255,255,255,.34);
+      animation:ripple .7s ease-out forwards;
+      pointer-events:none;
+    }
+
+    @keyframes ripple{
+      to{
+        transform:scale(16);
+        opacity:0;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+    }
+
+    .instagram{
+      color:#fff;
+      background:linear-gradient(90deg, var(--ig1), var(--ig2));
+      box-shadow:0 10px 24px rgba(214,51,132,.28);
+    }
+
+    .tiktok{
+      color:#fff;
+      background:linear-gradient(90deg, #0d0e10, #15171a);
+      box-shadow:0 10px 24px rgba(0,0,0,.30);
+    }
+
+    .snapchat{
+      color:#111;
+      background:linear-gradient(90deg, #fff200, var(--snap));
+      box-shadow:0 10px 24px rgba(255,239,0,.22);
+    }
+
+    .whatsapp{
+      color:#fff;
+      background:linear-gradient(90deg, var(--wa1), var(--wa2));
+      box-shadow:0 10px 24px rgba(37,211,102,.26);
+    }
+
+    .mini-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .mini-btn{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:12px 10px;
+      border-radius:15px;
+      background:rgba(255,255,255,.08);
+      color:#fff;
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,.12);
+      font-weight:700;
+      font-size:.95rem;
+      transition:transform .18s ease, background .2s ease, border-color .2s ease;
+      overflow:hidden;
+      cursor:pointer;
+    }
+
+    .mini-btn:hover{
+      transform:translateY(-2px);
+      background:rgba(255,255,255,.11);
+      border-color:rgba(255,255,255,.18);
+    }
+
+    .line{
+      height:1px;
+      margin:18px 0 12px;
+      background:rgba(255,255,255,.14);
+    }
+
+    .footer{
+      text-align:center;
+      color:rgba(255,255,255,.78);
+      font-size:.92rem;
+    }
+
+    .footer span{
+      color:#ff5a7d;
+      font-weight:800;
+    }
+
+    .toast{
+      position:fixed;
+      bottom:18px;
+      left:50%;
+      transform:translateX(-50%) translateY(20px);
+      background:rgba(15,18,25,.88);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      padding:12px 16px;
+      border-radius:14px;
+      box-shadow:0 12px 30px rgba(0,0,0,.26);
+      opacity:0;
+      pointer-events:none;
+      transition:.28s ease;
+      z-index:30;
+      font-weight:700;
+      font-size:.95rem;
+      white-space:nowrap;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+    @media (max-width:520px){
+      body{ padding:14px; }
+      .container{ width:100%; }
+      .card{
+        border-radius:24px;
+        padding:26px 16px 18px;
       }
-    }
-
-    .avatar-wrap {
-      width: 118px;
-      height: 118px;
-      margin: 0 auto 18px;
-      border-radius: 50%;
-      padding: 4px;
-      background: linear-gradient(135deg, #f3e2be, #8c8278, #ffffff);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-    }
-
-    .avatar {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid rgba(255,255,255,0.75);
-      display: block;
-      background: #222;
-    }
-
-    h1 {
-      font-size: 2rem;
-      line-height: 1.1;
-      margin-bottom: 6px;
-      font-weight: 800;
-    }
-
-    .username {
-      font-size: 1.02rem;
-      color: rgba(255,255,255,0.82);
-      margin-bottom: 16px;
-    }
-
-    .bio {
-      font-size: 1rem;
-      line-height: 1.9;
-      color: rgba(255,255,255,0.94);
-      margin-bottom: 24px;
-    }
-
-    .buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .btn {
-      position: relative;
-      width: 100%;
-      text-decoration: none;
-      border: none;
-      border-radius: 18px;
-      padding: 15px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      font-size: 1.05rem;
-      font-weight: 800;
-      cursor: pointer;
-      overflow: hidden;
-      transition: transform 0.18s ease, box-shadow 0.25s ease, filter 0.25s ease;
-    }
-
-    .btn i {
-      font-size: 1.25rem;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px) scale(1.01);
-      filter: brightness(1.03);
-    }
-
-    .btn:active {
-      transform: scale(0.985);
-    }
-
-    .btn::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -120%;
-      width: 55%;
-      height: 100%;
-      transform: skewX(-25deg);
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent);
-      transition: left 0.65s ease;
-    }
-
-    .btn:hover::before {
-      left: 130%;
-    }
-
-    .btn.clicked {
-      animation: clickPop 0.45s ease;
-    }
-
-    @keyframes clickPop {
-      0% { transform: scale(1); }
-      35% { transform: scale(0.96); }
-      70% { transform: scale(1.03); }
-      100% { transform: scale(1); }
-    }
-
-    .ripple {
-      position: absolute;
-      border-radius: 50%;
-      transform: scale(0);
-      background: rgba(255,255,255,0.33);
-      animation: rippleAnim 0.7s ease-out forwards;
-      pointer-events: none;
-    }
-
-    @keyframes rippleAnim {
-      to {
-        transform: scale(16);
-        opacity: 0;
+      .avatar-wrap{
+        width:102px;
+        height:102px;
       }
-    }
-
-    .instagram {
-      background: linear-gradient(90deg, #d63384, #de3c73, #c92d70);
-      color: #fff;
-      box-shadow: 0 10px 25px rgba(214,51,132,0.26);
-    }
-
-    .tiktok {
-      background: #0f1013;
-      color: #fff;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.28);
-    }
-
-    .snapchat {
-      background: #ffef00;
-      color: #111;
-      box-shadow: 0 10px 25px rgba(255,239,0,0.22);
-    }
-
-    .whatsapp {
-      background: linear-gradient(90deg, #18b857, #22c55e, #25d366);
-      color: #fff;
-      box-shadow: 0 10px 25px rgba(37,211,102,0.25);
-    }
-
-    .footer-line {
-      height: 1px;
-      background: rgba(255,255,255,0.14);
-      margin: 22px 0 14px;
-    }
-
-    .footer {
-      font-size: 0.92rem;
-      color: rgba(255,255,255,0.78);
-    }
-
-    .footer span {
-      color: #ff5f7e;
-      font-weight: 800;
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 14px;
-        align-items: center;
+      h1{ font-size:1.72rem; }
+      .username{ font-size:.96rem; }
+      .bio{ font-size:.95rem; line-height:1.8; }
+      .btn{
+        padding:14px 14px;
+        border-radius:16px;
+        font-size:.98rem;
       }
-
-      .card {
-        max-width: 100%;
-        border-radius: 24px;
-        padding: 26px 18px 20px;
-      }
-
-      .avatar-wrap {
-        width: 102px;
-        height: 102px;
-      }
-
-      h1 {
-        font-size: 1.65rem;
-      }
-
-      .username {
-        font-size: 0.97rem;
-      }
-
-      .bio {
-        font-size: 0.95rem;
-        line-height: 1.8;
-      }
-
-      .btn {
-        padding: 14px 14px;
-        border-radius: 16px;
-        font-size: 0.98rem;
-      }
-
-      .btn i {
-        font-size: 1.15rem;
+      .btn i{ font-size:1.12rem; }
+      .mini-row{
+        grid-template-columns:1fr;
       }
     }
   </style>
 </head>
 <body>
+  <div class="bg"></div>
 
-  <div class="background"></div>
+  <main class="container">
+    <section class="card" id="card">
+      <div class="shine"></div>
 
-  <div class="card">
-    <div class="avatar-wrap">
-      <img src="profile.jpg" alt="Saif Qaryeb" class="avatar">
-    </div>
+      <div class="avatar-wrap">
+        <img src="profile.jpg" alt="Saif Qaryeb" class="avatar">
+      </div>
 
-    <h1>سيف قريب</h1>
-    <div class="username">@saifqaryeb</div>
+      <h1>سيف قريب</h1>
+      <div class="username" id="username">@saifqaryeb</div>
 
-    <div class="bio">
-      Computer Engineering 25<br>
-      Testing Website 2026/2027
-    </div>
+      <div class="bio">
+        Computer Engineering 25<br>
+        Testing Website 2026/2027
+      </div>
 
-    <div class="buttons">
-      <a class="btn instagram" href="https://instagram.com/saifqaryeb" target="_blank">
-        <i class="fa-brands fa-instagram"></i>
-        <span>Instagram</span>
-      </a>
+      <div class="actions">
+        <a class="btn instagram" href="https://instagram.com/saifqaryeb" target="_blank" rel="noopener">
+          <i class="fa-brands fa-instagram"></i>
+          <span>Instagram</span>
+        </a>
 
-      <a class="btn tiktok" href="https://www.tiktok.com/@saifqaryeb" target="_blank">
-        <i class="fa-brands fa-tiktok"></i>
-        <span>TikTok</span>
-      </a>
+        <a class="btn tiktok" href="https://www.tiktok.com/@saifqaryeb" target="_blank" rel="noopener">
+          <i class="fa-brands fa-tiktok"></i>
+          <span>TikTok</span>
+        </a>
 
-      <a class="btn snapchat" href="https://www.snapchat.com/add/saif-qaryeb" target="_blank">
-        <i class="fa-brands fa-snapchat"></i>
-        <span>Snapchat</span>
-      </a>
+        <a class="btn snapchat" href="https://www.snapchat.com/add/saif-qaryeb" target="_blank" rel="noopener">
+          <i class="fa-brands fa-snapchat"></i>
+          <span>Snapchat</span>
+        </a>
 
-      <a class="btn whatsapp" href="https://wa.me/972598893689" target="_blank">
-        <i class="fa-brands fa-whatsapp"></i>
-        <span>WhatsApp</span>
-      </a>
-    </div>
+        <a class="btn whatsapp" href="https://wa.me/972598893689?text=مرحبا%20سيف" target="_blank" rel="noopener">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span>WhatsApp</span>
+        </a>
+      </div>
 
-    <div class="footer-line"></div>
-    <div class="footer">Made with <span>♥</span> by Saif</div>
-  </div>
+      <div class="mini-row">
+        <button class="mini-btn" id="copyBtn">
+          <i class="fa-regular fa-copy"></i>
+          <span>Copy Username</span>
+        </button>
+
+        <button class="mini-btn" id="shareBtn">
+          <i class="fa-solid fa-share-nodes"></i>
+          <span>Share Site</span>
+        </button>
+      </div>
+
+      <div class="line"></div>
+      <div class="footer">Made with <span>♥</span> by Saif</div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">Copied successfully</div>
 
   <script>
-    document.querySelectorAll(".btn").forEach((btn) => {
+    // Ripple + press animation
+    document.querySelectorAll(".btn, .mini-btn").forEach((btn) => {
       btn.addEventListener("click", function(e) {
         this.classList.remove("clicked");
         void this.offsetWidth;
@@ -360,7 +493,67 @@
         }, 700);
       });
     });
-  </script>
 
+    // Copy username
+    const copyBtn = document.getElementById("copyBtn");
+    const toast = document.getElementById("toast");
+
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    copyBtn.addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText("@saifqaryeb");
+        showToast("Username copied");
+      }catch{
+        showToast("Copy failed");
+      }
+    });
+
+    // Share site
+    const shareBtn = document.getElementById("shareBtn");
+    shareBtn.addEventListener("click", async () => {
+      if (navigator.share) {
+        try{
+          await navigator.share({
+            title: "Saif Qaryeb",
+            text: "Check out my links",
+            url: window.location.href
+          });
+        }catch(e){}
+      } else {
+        try{
+          await navigator.clipboard.writeText(window.location.href);
+          showToast("Site link copied");
+        }catch{
+          showToast("Unable to share");
+        }
+      }
+    });
+
+    // Subtle 3D tilt on desktop
+    const card = document.getElementById("card");
+    if (window.innerWidth > 768) {
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * -4;
+        const rotateY = ((x - centerX) / centerX) * 4;
+
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "rotateX(0deg) rotateY(0deg)";
+      });
+    }
+  </script>
 </body>
 </html>
