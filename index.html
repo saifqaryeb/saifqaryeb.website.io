@@ -27,6 +27,8 @@
       --snap2:#ffea00;
       --wa1:#16b857;
       --wa2:#25d366;
+      --li1:#0077b5;
+      --li2:#0a66c2;
 
       --bg-overlay1:rgba(8,12,18,.28);
       --bg-overlay2:rgba(8,12,18,.62);
@@ -437,6 +439,7 @@
     .btn:nth-child(2){ animation-delay:.16s; }
     .btn:nth-child(3){ animation-delay:.24s; }
     .btn:nth-child(4){ animation-delay:.32s; }
+    .btn:nth-child(5){ animation-delay:.40s; }
 
     @keyframes buttonFade{
       from{
@@ -483,6 +486,7 @@
     .tiktok{ background:linear-gradient(90deg, var(--tt1), var(--tt2)); }
     .snapchat{ color:#111; background:linear-gradient(90deg, var(--snap1), var(--snap2)); }
     .whatsapp{ background:linear-gradient(90deg, var(--wa1), var(--wa2)); }
+    .linkedin{ background:linear-gradient(90deg, var(--li1), var(--li2)); }
 
     .mini-row{
       display:grid;
@@ -720,6 +724,11 @@
           <span id="whatsappText">واتساب</span>
           <i class="fa-brands fa-whatsapp"></i>
         </a>
+
+        <a class="btn linkedin" href="https://www.linkedin.com/in/saif-qaryeb-a8750a3ba/" target="_blank" rel="noopener">
+          <span id="linkedinText">لينكدإن</span>
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
       </div>
 
       <div class="mini-row">
@@ -760,6 +769,7 @@
         tiktok: "تيك توك",
         snapchat: "سناب شات",
         whatsapp: "واتساب",
+        linkedin: "لينكدإن",
         share: "مشاركة الموقع",
         copyUser: "نسخ اليوزر",
         footer: 'Made with <span>♥</span> by Saif',
@@ -783,6 +793,7 @@
         tiktok: "TikTok",
         snapchat: "Snapchat",
         whatsapp: "WhatsApp",
+        linkedin: "LinkedIn",
         share: "Share Site",
         copyUser: "Copy Username",
         footer: 'Made with <span>♥</span> by Saif',
@@ -830,6 +841,7 @@
       document.getElementById("tiktokText").textContent = t.tiktok;
       document.getElementById("snapchatText").textContent = t.snapchat;
       document.getElementById("whatsappText").textContent = t.whatsapp;
+      document.getElementById("linkedinText").textContent = t.linkedin;
       document.getElementById("shareText").textContent = t.share;
       document.getElementById("copyUserText").textContent = t.copyUser;
       document.getElementById("footerText").innerHTML = t.footer;
