@@ -805,13 +805,6 @@
 
     document.getElementById("arabicBtn").addEventListener("click", () => chooseLanguage("ar"));
     document.getElementById("englishBtn").addEventListener("click", () => chooseLanguage("en"));
-
-    const savedLang = localStorage.getItem("siteLanguage");
-    if(savedLang){
-      applyLanguage(savedLang);
-      langOverlay.classList.add("hide");
-    }
-
     document.querySelectorAll(".btn, .mini-btn, .lang-btn").forEach((btn) => {
       btn.addEventListener("click", function(e) {
         this.classList.remove("clicked");
