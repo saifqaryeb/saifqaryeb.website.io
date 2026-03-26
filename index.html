@@ -49,7 +49,6 @@
       position:relative;
     }
 
-    /* الخلفية المتحركة */
     .bg{
       position:fixed;
       inset:0;
@@ -104,6 +103,136 @@
     @keyframes blob2{
       from{ transform:translate(0,0); }
       to{ transform:translate(-20px,12px); }
+    }
+
+    /* شاشة اختيار اللغة */
+    .lang-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(8,10,15,.55);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:100;
+      transition:.45s ease;
+    }
+
+    .lang-overlay.hide{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+
+    .lang-box{
+      width:min(92vw, 430px);
+      border-radius:28px;
+      padding:30px 22px 24px;
+      text-align:center;
+      background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.08));
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 24px 60px rgba(0,0,0,.38);
+      animation:popIn .7s cubic-bezier(.18,.89,.32,1.2);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .lang-box::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.10), transparent 38%, transparent 72%, rgba(255,255,255,.05));
+      pointer-events:none;
+    }
+
+    .lang-box::after{
+      content:"";
+      position:absolute;
+      top:-35%;
+      left:-50%;
+      width:42%;
+      height:180%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+      transform:rotate(18deg);
+      animation:shineMove 6s linear infinite;
+      pointer-events:none;
+    }
+
+    @keyframes popIn{
+      from{
+        opacity:0;
+        transform:scale(.86) translateY(18px);
+      }
+      to{
+        opacity:1;
+        transform:scale(1) translateY(0);
+      }
+    }
+
+    .lang-title{
+      font-size:1.7rem;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+
+    .lang-sub{
+      color:var(--muted);
+      font-size:1rem;
+      margin-bottom:22px;
+      line-height:1.8;
+    }
+
+    .lang-buttons{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .lang-btn{
+      position:relative;
+      border:none;
+      outline:none;
+      cursor:pointer;
+      border-radius:18px;
+      padding:16px 14px;
+      font-size:1.05rem;
+      font-weight:800;
+      color:#fff;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.12);
+      transition:.22s ease;
+      overflow:hidden;
+    }
+
+    .lang-btn:hover{
+      transform:translateY(-2px) scale(1.01);
+      background:rgba(255,255,255,.14);
+    }
+
+    .lang-btn:active{
+      transform:scale(.985);
+    }
+
+    .lang-btn::before,
+    .btn::before,
+    .mini-btn::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:-120%;
+      width:52%;
+      height:100%;
+      transform:skewX(-24deg);
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
+      transition:left .65s ease;
+      pointer-events:none;
+    }
+
+    .lang-btn:hover::before,
+    .btn:hover::before,
+    .mini-btn:hover::before{
+      left:130%;
     }
 
     .wrap{
@@ -268,27 +397,9 @@
       transform:scale(.985);
     }
 
-    .btn::before,
-    .mini-btn::before{
-      content:"";
-      position:absolute;
-      top:0;
-      left:-120%;
-      width:52%;
-      height:100%;
-      transform:skewX(-24deg);
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
-      transition:left .65s ease;
-      pointer-events:none;
-    }
-
-    .btn:hover::before,
-    .mini-btn:hover::before{
-      left:130%;
-    }
-
     .btn.clicked,
-    .mini-btn.clicked{
+    .mini-btn.clicked,
+    .lang-btn.clicked{
       animation:press .45s ease;
     }
 
@@ -404,7 +515,6 @@
       transform:translateX(-50%) translateY(0);
     }
 
-    /* للموبايل */
     @media (max-width: 640px){
       body{
         padding:14px;
@@ -443,6 +553,10 @@
       .mini-row{
         grid-template-columns:1fr 1fr;
       }
+
+      .lang-buttons{
+        grid-template-columns:1fr;
+      }
     }
 
     @media (max-width: 430px){
@@ -468,6 +582,19 @@
 
   <div class="bg"></div>
 
+  <!-- اختيار اللغة -->
+  <div class="lang-overlay" id="langOverlay">
+    <div class="lang-box">
+      <div class="lang-title" id="langTitle">اختر لغتك</div>
+      <div class="lang-sub" id="langSub">Choose your language to continue</div>
+
+      <div class="lang-buttons">
+        <button class="lang-btn" id="arabicBtn">العربية</button>
+        <button class="lang-btn" id="englishBtn">English</button>
+      </div>
+    </div>
+  </div>
+
   <main class="wrap">
     <section class="card" id="card">
 
@@ -476,10 +603,10 @@
           <img src="profile.jpg" alt="Saif Qaryeb" class="avatar">
         </div>
 
-        <h1>سيف قريب</h1>
+        <h1 id="nameText">سيف قريب</h1>
         <div class="username">@saifqaryeb</div>
 
-        <div class="bio">
+        <div class="bio" id="bioText">
           Computer Engineering 25<br>
           Testing Website 2026/2027
         </div>
@@ -487,40 +614,40 @@
 
       <div class="main-links">
         <a class="btn instagram" href="https://instagram.com/saifqaryeb" target="_blank" rel="noopener">
-          <span>Instagram</span>
+          <span id="instagramText">Instagram</span>
           <i class="fa-brands fa-instagram"></i>
         </a>
 
         <a class="btn tiktok" href="https://www.tiktok.com/@saifqaryeb" target="_blank" rel="noopener">
-          <span>TikTok</span>
+          <span id="tiktokText">TikTok</span>
           <i class="fa-brands fa-tiktok"></i>
         </a>
 
         <a class="btn snapchat" href="https://www.snapchat.com/add/saif-qaryeb" target="_blank" rel="noopener">
-          <span>Snapchat</span>
+          <span id="snapchatText">Snapchat</span>
           <i class="fa-brands fa-snapchat"></i>
         </a>
 
         <a class="btn whatsapp" href="https://wa.me/972598893689?text=مرحبا%20سيف" target="_blank" rel="noopener">
-          <span>WhatsApp</span>
+          <span id="whatsappText">WhatsApp</span>
           <i class="fa-brands fa-whatsapp"></i>
         </a>
       </div>
 
       <div class="mini-row">
         <button class="mini-btn" id="shareBtn">
-          <span>Share Site</span>
+          <span id="shareText">Share Site</span>
           <i class="fa-solid fa-share-nodes"></i>
         </button>
 
         <button class="mini-btn" id="copyUserBtn">
-          <span>Copy Username</span>
+          <span id="copyUserText">Copy Username</span>
           <i class="fa-regular fa-copy"></i>
         </button>
       </div>
 
       <div class="line"></div>
-      <div class="footer">Made with <span>♥</span> by Saif</div>
+      <div class="footer" id="footerText">Made with <span>♥</span> by Saif</div>
     </section>
   </main>
 
@@ -528,6 +655,48 @@
 
   <script>
     const toast = document.getElementById("toast");
+    const langOverlay = document.getElementById("langOverlay");
+
+    const translations = {
+      ar: {
+        htmlLang: "ar",
+        dir: "rtl",
+        title: "سيف قريب",
+        langTitle: "اختر لغتك",
+        langSub: "Choose your language to continue",
+        name: "سيف قريب",
+        bio: "Computer Engineering 25<br>Testing Website 2026/2027",
+        instagram: "Instagram",
+        tiktok: "TikTok",
+        snapchat: "Snapchat",
+        whatsapp: "WhatsApp",
+        share: "مشاركة الموقع",
+        copyUser: "نسخ اليوزر",
+        footer: 'Made with <span>♥</span> by Saif',
+        copiedUser: "تم نسخ اليوزر",
+        copiedLink: "تم نسخ الرابط",
+        shareUnavailable: "المشاركة غير متاحة"
+      },
+      en: {
+        htmlLang: "en",
+        dir: "ltr",
+        title: "Saif Qaryeb",
+        langTitle: "Choose your language",
+        langSub: "اختر لغتك للمتابعة",
+        name: "Saif Qaryeb",
+        bio: "Computer Engineering 25<br>Testing Website 2026/2027",
+        instagram: "Instagram",
+        tiktok: "TikTok",
+        snapchat: "Snapchat",
+        whatsapp: "WhatsApp",
+        share: "Share Site",
+        copyUser: "Copy Username",
+        footer: 'Made with <span>♥</span> by Saif',
+        copiedUser: "Username copied",
+        copiedLink: "Link copied",
+        shareUnavailable: "Share unavailable"
+      }
+    };
 
     function showToast(msg){
       toast.textContent = msg;
@@ -535,7 +704,47 @@
       setTimeout(() => toast.classList.remove("show"), 1800);
     }
 
-    document.querySelectorAll(".btn, .mini-btn").forEach((btn) => {
+    function applyLanguage(lang){
+      const t = translations[lang];
+
+      document.documentElement.lang = t.htmlLang;
+      document.documentElement.dir = t.dir;
+      document.title = t.title;
+
+      document.getElementById("langTitle").textContent = t.langTitle;
+      document.getElementById("langSub").textContent = t.langSub;
+
+      document.getElementById("nameText").textContent = t.name;
+      document.getElementById("bioText").innerHTML = t.bio;
+      document.getElementById("instagramText").textContent = t.instagram;
+      document.getElementById("tiktokText").textContent = t.tiktok;
+      document.getElementById("snapchatText").textContent = t.snapchat;
+      document.getElementById("whatsappText").textContent = t.whatsapp;
+      document.getElementById("shareText").textContent = t.share;
+      document.getElementById("copyUserText").textContent = t.copyUser;
+      document.getElementById("footerText").innerHTML = t.footer;
+
+      localStorage.setItem("siteLanguage", lang);
+    }
+
+    function chooseLanguage(lang){
+      applyLanguage(lang);
+      langOverlay.classList.add("hide");
+    }
+
+    document.getElementById("arabicBtn").addEventListener("click", () => chooseLanguage("ar"));
+    document.getElementById("englishBtn").addEventListener("click", () => chooseLanguage("en"));
+
+    // لو بدك يسأل كل مرة، خليه هيك
+    // لو بدك يحفظ الاختيار، فعل السطور التالية:
+    const savedLang = localStorage.getItem("siteLanguage");
+    if(savedLang){
+      applyLanguage(savedLang);
+      langOverlay.classList.add("hide");
+    }
+
+    // Ripple + press
+    document.querySelectorAll(".btn, .mini-btn, .lang-btn").forEach((btn) => {
       btn.addEventListener("click", function(e) {
         this.classList.remove("clicked");
         void this.offsetWidth;
@@ -560,16 +769,20 @@
       });
     });
 
+    // Copy username
     document.getElementById("copyUserBtn").addEventListener("click", async () => {
+      const lang = localStorage.getItem("siteLanguage") || "ar";
       try{
         await navigator.clipboard.writeText("@saifqaryeb");
-        showToast("Username copied");
+        showToast(translations[lang].copiedUser);
       }catch{
         showToast("Copy failed");
       }
     });
 
+    // Share site
     document.getElementById("shareBtn").addEventListener("click", async () => {
+      const lang = localStorage.getItem("siteLanguage") || "ar";
       if (navigator.share) {
         try{
           await navigator.share({
@@ -581,14 +794,14 @@
       } else {
         try{
           await navigator.clipboard.writeText(window.location.href);
-          showToast("Link copied");
+          showToast(translations[lang].copiedLink);
         }catch{
-          showToast("Share unavailable");
+          showToast(translations[lang].shareUnavailable);
         }
       }
     });
 
-    // Tilt on desktop فقط
+    // Tilt on desktop only
     const card = document.getElementById("card");
     if (window.innerWidth > 768) {
       card.addEventListener("mousemove", (e) => {
