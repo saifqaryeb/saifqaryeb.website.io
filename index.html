@@ -27,6 +27,27 @@
       --snap2:#ffea00;
       --wa1:#16b857;
       --wa2:#25d366;
+
+      --bg-overlay1:rgba(8,12,18,.28);
+      --bg-overlay2:rgba(8,12,18,.62);
+    }
+
+    body.theme-purple{
+      --glass1:rgba(186, 104, 255, .16);
+      --glass2:rgba(115, 54, 180, .10);
+      --stroke:rgba(220,180,255,.18);
+      --shadow:0 28px 60px rgba(47, 10, 74, .45);
+      --bg-overlay1:rgba(32,12,44,.28);
+      --bg-overlay2:rgba(20,10,30,.62);
+    }
+
+    body.theme-blue{
+      --glass1:rgba(91, 174, 255, .15);
+      --glass2:rgba(16, 70, 116, .10);
+      --stroke:rgba(155,220,255,.18);
+      --shadow:0 28px 60px rgba(6, 30, 57, .42);
+      --bg-overlay1:rgba(8,25,40,.28);
+      --bg-overlay2:rgba(7,19,34,.62);
     }
 
     *{
@@ -46,18 +67,20 @@
       color:var(--text);
       background:#0d1118;
       position:relative;
+      transition:background .35s ease;
     }
 
     .bg{
       position:fixed;
       inset:0;
       background:
-        linear-gradient(rgba(8,12,18,.28), rgba(8,12,18,.62)),
+        linear-gradient(var(--bg-overlay1), var(--bg-overlay2)),
         url("back.jpg") center center / cover no-repeat;
       z-index:-5;
       transform:scale(1.08);
       animation:bgDrift 18s ease-in-out infinite alternate;
       will-change:transform;
+      transition:.35s ease;
     }
 
     @keyframes bgDrift{
@@ -104,6 +127,40 @@
       to{ transform:translate(-14px,10px); }
     }
 
+    /* particles */
+    .particles{
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+      pointer-events:none;
+      z-index:-4;
+    }
+
+    .particle{
+      position:absolute;
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:rgba(255,255,255,.22);
+      animation:floatParticle linear infinite;
+      opacity:.55;
+    }
+
+    @keyframes floatParticle{
+      0%{
+        transform:translateY(110vh) scale(.6);
+        opacity:0;
+      }
+      15%{
+        opacity:.55;
+      }
+      100%{
+        transform:translateY(-10vh) scale(1);
+        opacity:0;
+      }
+    }
+
+    /* language overlay */
     .lang-overlay{
       position:fixed;
       inset:0;
@@ -216,7 +273,7 @@
       box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.10);
       transform-style:preserve-3d;
       animation:cardFloat 7s ease-in-out infinite;
-      transition:transform .18s ease;
+      transition:transform .18s ease, background .35s ease, border-color .35s ease;
     }
 
     @keyframes cardFloat{
@@ -252,6 +309,34 @@
       100%{ left:130%; }
     }
 
+    .top-actions{
+      display:flex;
+      justify-content:flex-end;
+      margin-bottom:8px;
+    }
+
+    .theme-btn{
+      border:none;
+      outline:none;
+      cursor:pointer;
+      background:rgba(255,255,255,.09);
+      border:1px solid rgba(255,255,255,.12);
+      color:#fff;
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1rem;
+      transition:.22s ease;
+    }
+
+    .theme-btn:hover{
+      background:rgba(255,255,255,.13);
+      transform:translateY(-2px);
+    }
+
     .profile{
       display:flex;
       flex-direction:column;
@@ -273,8 +358,12 @@
     }
 
     @keyframes avatarGlow{
-      0%,100%{ box-shadow:0 12px 26px rgba(0,0,0,.34); }
-      50%{ box-shadow:0 14px 30px rgba(255,255,255,.12), 0 12px 26px rgba(0,0,0,.34); }
+      0%,100%{
+        box-shadow:0 12px 26px rgba(0,0,0,.34), 0 0 0 0 rgba(255,255,255,.10);
+      }
+      50%{
+        box-shadow:0 14px 30px rgba(255,255,255,.12), 0 0 0 12px rgba(255,255,255,.03);
+      }
     }
 
     .avatar-wrap::after{
@@ -295,12 +384,40 @@
       background:#222;
     }
 
+    .greeting{
+      font-size:.95rem;
+      color:rgba(255,255,255,.78);
+      margin-bottom:6px;
+      font-weight:700;
+      min-height:24px;
+    }
+
     .name-inline{
       font-size:2.2rem;
       font-weight:800;
       line-height:1.1;
-      margin-bottom:12px;
+      margin-bottom:10px;
       text-shadow:0 6px 20px rgba(0,0,0,.18);
+    }
+
+    .typing-box{
+      min-height:34px;
+      margin-bottom:10px;
+      color:#fff;
+      font-size:1rem;
+      font-weight:700;
+      letter-spacing:.2px;
+    }
+
+    .cursor{
+      display:inline-block;
+      margin-right:2px;
+      animation:blink 1s infinite;
+    }
+
+    @keyframes blink{
+      0%, 50%{ opacity:1; }
+      51%, 100%{ opacity:0; }
     }
 
     .bio{
@@ -506,6 +623,13 @@
       .name-inline{
         font-size:1.9rem;
       }
+      .typing-box{
+        font-size:.92rem;
+        min-height:30px;
+      }
+      .greeting{
+        font-size:.88rem;
+      }
       .bio{
         font-size:.93rem;
         line-height:1.8;
@@ -565,6 +689,7 @@
 <body>
 
   <div class="bg"></div>
+  <div class="particles" id="particles"></div>
 
   <div class="lang-overlay" id="langOverlay">
     <div class="lang-box">
@@ -580,12 +705,24 @@
   <main class="wrap">
     <section class="card" id="card">
 
+      <div class="top-actions">
+        <button class="theme-btn" id="themeBtn" title="Change Theme">
+          <i class="fa-solid fa-palette"></i>
+        </button>
+      </div>
+
       <div class="profile">
         <div class="avatar-wrap">
           <img src="profile.jpg" alt="Saif Qaryeb" class="avatar">
         </div>
 
+        <div class="greeting" id="greetingText">أهلًا بك</div>
+
         <div class="name-inline" id="nameText">سيف قريب</div>
+
+        <div class="typing-box">
+          <span id="typingText"></span><span class="cursor">|</span>
+        </div>
 
         <div class="bio" id="bioText">
           هندسة حاسوب 25<br>
@@ -637,6 +774,9 @@
   <script>
     const toast = document.getElementById("toast");
     const langOverlay = document.getElementById("langOverlay");
+    const typingText = document.getElementById("typingText");
+    const greetingText = document.getElementById("greetingText");
+    const body = document.body;
 
     const translations = {
       ar: {
@@ -656,7 +796,16 @@
         footer: 'Made with <span>♥</span> by Saif',
         copiedUser: "تم نسخ اليوزر",
         copiedLink: "تم نسخ الرابط",
-        shareUnavailable: "المشاركة غير متاحة"
+        shareUnavailable: "المشاركة غير متاحة",
+        morning: "صباح الخير",
+        afternoon: "نهارك سعيد",
+        evening: "مساء الخير",
+        night: "مساؤك جميل",
+        typingLines: [
+          "هندسة حاسوب 25",
+          "موقع شخصي تفاعلي",
+          "أهلًا بك في صفحتي"
+        ]
       },
       en: {
         htmlLang: "en",
@@ -665,7 +814,7 @@
         langTitle: "Choose your language",
         langSub: "اختر لغتك للمتابعة",
         name: "Saif Qaryeb",
-        bio: "Computer Engineering 25<br>Testing Website 2026/2027",
+        bio: "Computer Engineering 25<br>Interactive Personal Website",
         instagram: "Instagram",
         tiktok: "TikTok",
         snapchat: "Snapchat",
@@ -675,9 +824,21 @@
         footer: 'Made with <span>♥</span> by Saif',
         copiedUser: "Username copied",
         copiedLink: "Link copied",
-        shareUnavailable: "Share unavailable"
+        shareUnavailable: "Share unavailable",
+        morning: "Good Morning",
+        afternoon: "Good Afternoon",
+        evening: "Good Evening",
+        night: "Good Night",
+        typingLines: [
+          "Computer Engineering 25",
+          "Interactive Personal Website",
+          "Welcome To My Page"
+        ]
       }
     };
+
+    let currentLang = "ar";
+    let typingInterval;
 
     function showToast(msg){
       toast.textContent = msg;
@@ -685,8 +846,51 @@
       setTimeout(() => toast.classList.remove("show"), 1800);
     }
 
-    function applyLanguage(lang){
+    function getGreeting(lang){
+      const hour = new Date().getHours();
       const t = translations[lang];
+
+      if(hour >= 5 && hour < 12) return t.morning;
+      if(hour >= 12 && hour < 17) return t.afternoon;
+      if(hour >= 17 && hour < 22) return t.evening;
+      return t.night;
+    }
+
+    function startTyping(lines){
+      clearInterval(typingInterval);
+      let lineIndex = 0;
+      let charIndex = 0;
+      let deleting = false;
+
+      typingText.textContent = "";
+
+      typingInterval = setInterval(() => {
+        const currentLine = lines[lineIndex];
+
+        if(!deleting){
+          typingText.textContent = currentLine.slice(0, charIndex + 1);
+          charIndex++;
+
+          if(charIndex === currentLine.length){
+            deleting = true;
+            setTimeout(() => {}, 900);
+          }
+        } else {
+          typingText.textContent = currentLine.slice(0, charIndex - 1);
+          charIndex--;
+
+          if(charIndex === 0){
+            deleting = false;
+            lineIndex = (lineIndex + 1) % lines.length;
+          }
+        }
+      }, deleting ? 45 : 85);
+    }
+
+    function applyLanguage(lang){
+      currentLang = lang;
+      const t = translations[lang];
+
       document.documentElement.lang = t.htmlLang;
       document.documentElement.dir = t.dir;
       document.title = t.title;
@@ -702,6 +906,9 @@
       document.getElementById("shareText").textContent = t.share;
       document.getElementById("copyUserText").textContent = t.copyUser;
       document.getElementById("footerText").innerHTML = t.footer;
+      greetingText.textContent = getGreeting(lang);
+
+      startTyping(t.typingLines);
     }
 
     function chooseLanguage(lang){
@@ -712,7 +919,7 @@
     document.getElementById("arabicBtn").addEventListener("click", () => chooseLanguage("ar"));
     document.getElementById("englishBtn").addEventListener("click", () => chooseLanguage("en"));
 
-    document.querySelectorAll(".btn, .mini-btn, .lang-btn").forEach((btn) => {
+    document.querySelectorAll(".btn, .mini-btn, .lang-btn, .theme-btn").forEach((btn) => {
       btn.addEventListener("click", function(e) {
         this.classList.remove("clicked");
         void this.offsetWidth;
@@ -738,17 +945,15 @@
     });
 
     document.getElementById("copyUserBtn").addEventListener("click", async () => {
-      const lang = document.documentElement.lang === "en" ? "en" : "ar";
       try{
         await navigator.clipboard.writeText("@saifqaryeb");
-        showToast(translations[lang].copiedUser);
+        showToast(translations[currentLang].copiedUser);
       }catch{
         showToast("Copy failed");
       }
     });
 
     document.getElementById("shareBtn").addEventListener("click", async () => {
-      const lang = document.documentElement.lang === "en" ? "en" : "ar";
       if (navigator.share) {
         try{
           await navigator.share({
@@ -760,10 +965,24 @@
       } else {
         try{
           await navigator.clipboard.writeText(window.location.href);
-          showToast(translations[lang].copiedLink);
+          showToast(translations[currentLang].copiedLink);
         }catch{
-          showToast(translations[lang].shareUnavailable);
+          showToast(translations[currentLang].shareUnavailable);
         }
+      }
+    });
+
+    const themes = ["default", "purple", "blue"];
+    let currentThemeIndex = 0;
+
+    document.getElementById("themeBtn").addEventListener("click", () => {
+      body.classList.remove("theme-purple", "theme-blue");
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+
+      if(themes[currentThemeIndex] === "purple"){
+        body.classList.add("theme-purple");
+      } else if(themes[currentThemeIndex] === "blue"){
+        body.classList.add("theme-blue");
       }
     });
 
@@ -785,6 +1004,19 @@
       card.addEventListener("mouseleave", () => {
         card.style.transform = "";
       });
+    }
+
+    // particles
+    const particlesContainer = document.getElementById("particles");
+    for(let i = 0; i < 18; i++){
+      const p = document.createElement("span");
+      p.className = "particle";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.animationDuration = (8 + Math.random() * 10) + "s";
+      p.style.animationDelay = Math.random() * 8 + "s";
+      p.style.opacity = (0.15 + Math.random() * 0.35).toFixed(2);
+      p.style.width = p.style.height = (4 + Math.random() * 5) + "px";
+      particlesContainer.appendChild(p);
     }
   </script>
 
